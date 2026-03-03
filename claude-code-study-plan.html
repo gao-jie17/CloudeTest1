@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Code Study Plan for Beginners</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --card: #21253a;
+      --border: #2e3350;
+      --accent: #d97706;
+      --accent-light: #fbbf24;
+      --accent-dim: #92400e;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --green: #34d399;
+      --blue: #60a5fa;
+      --purple: #a78bfa;
+      --red: #f87171;
+      --week1: #1e3a2f;
+      --week2: #1a2a4a;
+      --week3: #2a1a4a;
+      --week4: #3a2a1a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #1a1d27 0%, #0f1117 50%, #1a1220 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 60px 24px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(217,119,6,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(217,119,6,0.15);
+      border: 1px solid var(--accent-dim);
+      color: var(--accent-light);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 99px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--accent-light);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    /* Section headers */
+    .section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Progress bar */
+    .progress-overview {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 48px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+
+    .phase-bar {
+      height: 8px;
+      border-radius: 99px;
+      opacity: 0.9;
+    }
+
+    .phase-bar.w1 { background: var(--green); }
+    .phase-bar.w2 { background: var(--blue); }
+    .phase-bar.w3 { background: var(--purple); }
+    .phase-bar.w4 { background: var(--accent-light); }
+
+    .progress-labels {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-top: 12px;
+    }
+
+    .progress-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Week cards */
+    .weeks-grid {
+      display: grid;
+      gap: 32px;
+    }
+
+    .week-card {
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .week-header {
+      padding: 24px 28px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .week-card:nth-child(1) .week-header { background: var(--week1); }
+    .week-card:nth-child(2) .week-header { background: var(--week2); }
+    .week-card:nth-child(3) .week-header { background: var(--week3); }
+    .week-card:nth-child(4) .week-header { background: var(--week4); }
+
+    .week-number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      line-height: 1;
+      opacity: 0.25;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .week-card:nth-child(1) .week-number { color: var(--green); }
+    .week-card:nth-child(2) .week-number { color: var(--blue); }
+    .week-card:nth-child(3) .week-number { color: var(--purple); }
+    .week-card:nth-child(4) .week-number { color: var(--accent-light); }
+
+    .week-meta h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .week-meta p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .week-tag {
+      margin-left: auto;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 99px;
+      flex-shrink: 0;
+    }
+
+    .week-card:nth-child(1) .week-tag { background: rgba(52,211,153,0.15); color: var(--green); }
+    .week-card:nth-child(2) .week-tag { background: rgba(96,165,250,0.15); color: var(--blue); }
+    .week-card:nth-child(3) .week-tag { background: rgba(167,139,250,0.15); color: var(--purple); }
+    .week-card:nth-child(4) .week-tag { background: rgba(251,191,36,0.15); color: var(--accent-light); }
+
+    .week-body {
+      background: var(--surface);
+      padding: 24px 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Days grid inside a week */
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .day-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+
+    .day-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .day-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .task-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .task-list li {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .task-list li::before {
+      content: '›';
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Tips / Resources sections */
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 48px;
+    }
+
+    .tip-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .tip-icon {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+
+    .tip-card h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .tip-card p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Commands cheatsheet */
+    .cheatsheet {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-top: 48px;
+    }
+
+    .cmd-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .cmd-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .cmd-code {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.8rem;
+      background: rgba(255,255,255,0.05);
+      color: var(--accent-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      display: inline-block;
+      width: fit-content;
+    }
+
+    .cmd-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 32px 24px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+
+    footer a {
+      color: var(--accent-light);
+      text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+
+    /* Milestone badge */
+    .milestone {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      width: 100%;
+    }
+
+    .milestone-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .week-card:nth-child(1) .milestone-dot { background: var(--green); }
+    .week-card:nth-child(2) .milestone-dot { background: var(--blue); }
+    .week-card:nth-child(3) .milestone-dot { background: var(--purple); }
+    .week-card:nth-child(4) .milestone-dot { background: var(--accent-light); }
+
+    @media (max-width: 600px) {
+      .progress-overview { grid-template-columns: repeat(2, 1fr); }
+      .progress-labels { grid-template-columns: repeat(2, 1fr); }
+      .hero-stats { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">Beginner Guide</div>
+    <h1>Claude Code Study Plan</h1>
+    <p>A structured 4-week path to go from zero to productive with Claude Code — Anthropic's AI-powered CLI for developers.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-value">4</div>
+        <div class="stat-label">Weeks</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">20</div>
+        <div class="stat-label">Days</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">60+</div>
+        <div class="stat-label">Topics</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">1–2h</div>
+        <div class="stat-label">Per Day</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <!-- Overview bar -->
+    <p class="section-title">Roadmap Overview</p>
+    <div class="progress-overview">
+      <div class="phase-bar w1"></div>
+      <div class="phase-bar w2"></div>
+      <div class="phase-bar w3"></div>
+      <div class="phase-bar w4"></div>
+      <div class="progress-labels" style="grid-column: 1/-1; display: grid; grid-template-columns: repeat(4,1fr);">
+        <div class="progress-label">Foundations</div>
+        <div class="progress-label">Core Skills</div>
+        <div class="progress-label">Power Usage</div>
+        <div class="progress-label">Real Projects</div>
+      </div>
+    </div>
+
+    <!-- Weeks -->
+    <p class="section-title">Weekly Plan</p>
+    <div class="weeks-grid">
+
+      <!-- WEEK 1 -->
+      <div class="week-card">
+        <div class="week-header">
+          <div class="week-number">01</div>
+          <div class="week-meta">
+            <h2>Foundations &amp; First Steps</h2>
+            <p>Get Claude Code installed, understand what it is, and run your first real interactions.</p>
+          </div>
+          <div class="week-tag">Beginner</div>
+        </div>
+        <div class="week-body">
+          <div class="days-grid">
+
+            <div class="day-card">
+              <div class="day-label">Day 1</div>
+              <div class="day-title">What is Claude Code?</div>
+              <ul class="task-list">
+                <li>Read the official Claude Code overview</li>
+                <li>Understand the difference vs chat UI</li>
+                <li>Learn the CLI-first philosophy</li>
+                <li>Browse the GitHub repository</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 2</div>
+              <div class="day-title">Installation &amp; Setup</div>
+              <ul class="task-list">
+                <li>Install via <code style="color:var(--accent-light)">npm i -g @anthropic-ai/claude-code</code></li>
+                <li>Authenticate with your API key</li>
+                <li>Run <code style="color:var(--accent-light)">claude --version</code> to verify</li>
+                <li>Explore <code style="color:var(--accent-light)">claude --help</code></li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 3</div>
+              <div class="day-title">Your First Session</div>
+              <ul class="task-list">
+                <li>Open a project folder in terminal</li>
+                <li>Start Claude Code with <code style="color:var(--accent-light)">claude</code></li>
+                <li>Ask it to explain the project structure</li>
+                <li>Try a simple code generation task</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 4</div>
+              <div class="day-title">Slash Commands Basics</div>
+              <ul class="task-list">
+                <li>Learn <code style="color:var(--accent-light)">/help</code> and <code style="color:var(--accent-light)">/clear</code></li>
+                <li>Use <code style="color:var(--accent-light)">/compact</code> to manage context</li>
+                <li>Try <code style="color:var(--accent-light)">/cost</code> to see token usage</li>
+                <li>Practice <code style="color:var(--accent-light)">/exit</code> to end session</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 5</div>
+              <div class="day-title">Reading &amp; Exploring Code</div>
+              <ul class="task-list">
+                <li>Ask Claude to read and summarize files</li>
+                <li>Use natural language to navigate codebases</li>
+                <li>Request architecture explanations</li>
+                <li>Practice "explain this function" prompts</li>
+              </ul>
+            </div>
+
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot"></div>
+            Milestone: Claude Code installed and running with first successful session completed
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEK 2 -->
+      <div class="week-card">
+        <div class="week-header">
+          <div class="week-number">02</div>
+          <div class="week-meta">
+            <h2>Core Workflow Skills</h2>
+            <p>Master file editing, git integration, and effective prompting patterns for daily use.</p>
+          </div>
+          <div class="week-tag">Intermediate</div>
+        </div>
+        <div class="week-body">
+          <div class="days-grid">
+
+            <div class="day-card">
+              <div class="day-label">Day 6</div>
+              <div class="day-title">File Editing Workflow</div>
+              <ul class="task-list">
+                <li>Ask Claude to edit specific functions</li>
+                <li>Review diffs before applying changes</li>
+                <li>Practice targeted, scoped edits</li>
+                <li>Understand how Claude reads context</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 7</div>
+              <div class="day-title">Git Integration</div>
+              <ul class="task-list">
+                <li>Have Claude write commit messages</li>
+                <li>Use Claude to review git diffs</li>
+                <li>Ask for PR descriptions automatically</li>
+                <li>Let Claude suggest branch strategies</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 8</div>
+              <div class="day-title">Debugging with Claude</div>
+              <ul class="task-list">
+                <li>Paste error messages for diagnosis</li>
+                <li>Walk through stack traces together</li>
+                <li>Ask for step-by-step fix strategies</li>
+                <li>Practice root cause analysis prompts</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 9</div>
+              <div class="day-title">Prompt Engineering</div>
+              <ul class="task-list">
+                <li>Learn to give precise, scoped instructions</li>
+                <li>Use context constraints effectively</li>
+                <li>Practice "only change X, not Y" patterns</li>
+                <li>Provide examples in prompts when needed</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 10</div>
+              <div class="day-title">CLAUDE.md &amp; Memory</div>
+              <ul class="task-list">
+                <li>Create a <code style="color:var(--accent-light)">CLAUDE.md</code> in your project</li>
+                <li>Define project conventions and tech stack</li>
+                <li>Learn global vs project-level instructions</li>
+                <li>Test how memory persists across sessions</li>
+              </ul>
+            </div>
+
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot"></div>
+            Milestone: Completed a real bug fix and wrote a git commit message entirely with Claude Code
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEK 3 -->
+      <div class="week-card">
+        <div class="week-header">
+          <div class="week-number">03</div>
+          <div class="week-meta">
+            <h2>Power Features &amp; Customization</h2>
+            <p>Unlock advanced capabilities: MCP, hooks, custom commands, and IDE integration.</p>
+          </div>
+          <div class="week-tag">Advanced</div>
+        </div>
+        <div class="week-body">
+          <div class="days-grid">
+
+            <div class="day-card">
+              <div class="day-label">Day 11</div>
+              <div class="day-title">VS Code Integration</div>
+              <ul class="task-list">
+                <li>Install the Claude Code VS Code extension</li>
+                <li>Use inline suggestions in the editor</li>
+                <li>Learn keyboard shortcuts for quick access</li>
+                <li>Combine terminal + editor workflow</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 12</div>
+              <div class="day-title">Custom Slash Commands</div>
+              <ul class="task-list">
+                <li>Create a <code style="color:var(--accent-light)">.claude/commands/</code> folder</li>
+                <li>Write a custom <code style="color:var(--accent-light)">/review</code> command</li>
+                <li>Build a <code style="color:var(--accent-light)">/test-gen</code> command</li>
+                <li>Share commands across your team</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 13</div>
+              <div class="day-title">MCP Servers (Basics)</div>
+              <ul class="task-list">
+                <li>Understand what Model Context Protocol is</li>
+                <li>Install a community MCP server</li>
+                <li>Connect Claude to external data sources</li>
+                <li>Try the filesystem or GitHub MCP server</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 14</div>
+              <div class="day-title">Hooks &amp; Automation</div>
+              <ul class="task-list">
+                <li>Learn pre/post tool call hooks</li>
+                <li>Set up auto-formatting on file edits</li>
+                <li>Create a hook to run tests after changes</li>
+                <li>Configure hooks in <code style="color:var(--accent-light)">settings.json</code></li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 15</div>
+              <div class="day-title">Agent Mode &amp; Tasks</div>
+              <ul class="task-list">
+                <li>Use <code style="color:var(--accent-light)">--print</code> for non-interactive runs</li>
+                <li>Chain multi-step autonomous tasks</li>
+                <li>Learn permission modes (auto-accept)</li>
+                <li>Practice headless scripting patterns</li>
+              </ul>
+            </div>
+
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot"></div>
+            Milestone: Created a custom slash command and connected at least one MCP server
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEK 4 -->
+      <div class="week-card">
+        <div class="week-header">
+          <div class="week-number">04</div>
+          <div class="week-meta">
+            <h2>Real Projects &amp; Best Practices</h2>
+            <p>Apply everything in a complete project and build habits for sustainable AI-assisted development.</p>
+          </div>
+          <div class="week-tag">Capstone</div>
+        </div>
+        <div class="week-body">
+          <div class="days-grid">
+
+            <div class="day-card">
+              <div class="day-label">Day 16</div>
+              <div class="day-title">Project Kickoff</div>
+              <ul class="task-list">
+                <li>Start a fresh project from scratch with Claude</li>
+                <li>Generate initial project scaffolding</li>
+                <li>Write a detailed CLAUDE.md upfront</li>
+                <li>Set up git from the beginning</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 17</div>
+              <div class="day-title">Feature Development</div>
+              <ul class="task-list">
+                <li>Build 2–3 features using Claude Code</li>
+                <li>Practice incremental, reviewable changes</li>
+                <li>Use <code style="color:var(--accent-light)">/plan</code> mode for design decisions</li>
+                <li>Keep Claude Code scoped to each task</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 18</div>
+              <div class="day-title">Testing &amp; Code Quality</div>
+              <ul class="task-list">
+                <li>Generate unit tests with Claude</li>
+                <li>Have Claude review code for issues</li>
+                <li>Run linters and fix problems together</li>
+                <li>Refactor with AI guidance</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 19</div>
+              <div class="day-title">Documentation &amp; Review</div>
+              <ul class="task-list">
+                <li>Generate a README automatically</li>
+                <li>Write inline comments where needed</li>
+                <li>Create a PR with Claude's help</li>
+                <li>Do a full code review with Claude</li>
+              </ul>
+            </div>
+
+            <div class="day-card">
+              <div class="day-label">Day 20</div>
+              <div class="day-title">Reflection &amp; Habits</div>
+              <ul class="task-list">
+                <li>Document your own workflow patterns</li>
+                <li>Identify what tasks Claude excels at</li>
+                <li>Set up templates for future projects</li>
+                <li>Explore the Anthropic docs for new features</li>
+              </ul>
+            </div>
+
+          </div>
+          <div class="milestone">
+            <div class="milestone-dot"></div>
+            Milestone: Shipped a complete small project using Claude Code end-to-end
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /weeks-grid -->
+
+    <!-- Tips -->
+    <p class="section-title" style="margin-top: 64px;">Tips for Success</p>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-icon">🎯</div>
+        <h3>Stay Specific</h3>
+        <p>Vague prompts produce vague results. Tell Claude exactly which file, function, or behavior you want to change.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🔍</div>
+        <h3>Review Every Change</h3>
+        <p>Always read the diffs before accepting them. AI code can be subtly wrong. You are the final reviewer.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📄</div>
+        <h3>Write a Good CLAUDE.md</h3>
+        <p>Invest time upfront describing your stack, conventions, and preferences. It pays dividends throughout the project.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">⚡</div>
+        <h3>Small, Iterative Tasks</h3>
+        <p>Break large requests into smaller steps. Each interaction should have a single, clear goal.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🧪</div>
+        <h3>Test as You Go</h3>
+        <p>Run your tests after each Claude-assisted change. Catch regressions early rather than debugging later.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📚</div>
+        <h3>Read the Docs</h3>
+        <p>Claude Code evolves quickly. Check the official docs and release notes regularly for new features.</p>
+      </div>
+    </div>
+
+    <!-- Cheatsheet -->
+    <div class="cheatsheet">
+      <p class="section-title">Essential Commands Cheatsheet</p>
+      <div class="cmd-grid">
+        <div class="cmd-item">
+          <span class="cmd-code">claude</span>
+          <span class="cmd-desc">Start interactive session</span>
+        </div>
+        <div class="cmd-item">
+          <span class="cmd-code">claude "your task"</span>
+          <span class="cmd-desc">One-shot task from shell</span>
+        </div>
+        <div class="cmd-item">
+          <span class="cmd-code">/help</span>
+          <span class="cmd-desc">Show all slash commands</span>
+        </div>
+        <div class="cmd-item">
+          <span class="cmd-code">/clear</span>
+          <span class="cmd-desc">Clear conversation context</span>
+        </div>
+        <div class="cmd-item">
+          <span class="cmd-code">/compact</span>
+          <span class="cmd-desc">Compress context to save tokens</span>
+        </div>
+        <div class="cmd-item">
+          <span class="cmd-code">/cost</span>
+          <span class="cmd-desc">Show token usage &amp; cost</span>
+        </div>
+        <div class="cmd-item">
+          <span class="cmd-code">/plan</span>
+          <span class="cmd-desc">Enter planning mode</span>
+        </div>
+        <div class="cmd-item">
+          <span class="cmd-code">/memory</span>
+          <span class="cmd-desc">View &amp; manage saved memories</span>
+        </div>
+        <div class="cmd-item">
+          <span class="cmd-code">--print</span>
+          <span class="cmd-desc">Non-interactive (CI/scripts) mode</span>
+        </div>
+        <div class="cmd-item">
+          <span class="cmd-code">--dangerously-skip-permissions</span>
+          <span class="cmd-desc">Auto-accept all tool calls</span>
+        </div>
+        <div class="cmd-item">
+          <span class="cmd-code">CLAUDE.md</span>
+          <span class="cmd-desc">Project-level persistent instructions</span>
+        </div>
+        <div class="cmd-item">
+          <span class="cmd-code">.claude/commands/</span>
+          <span class="cmd-desc">Custom slash command folder</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+
+  <footer>
+    Built for Claude Code learners &mdash; March 2026 &bull;
+    <a href="https://docs.anthropic.com/claude-code" target="_blank" rel="noopener">Official Docs</a> &bull;
+    <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+
+</body>
+</html>
